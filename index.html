@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Sound Spectrogram - Modular</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        
+        <!-- 频率轴标签 -->
+        <div class="freq-axis">
+            <div class="freq-label">8kHz</div>
+            <div class="freq-label">6kHz</div>
+            <div class="freq-label">4kHz</div>
+            <div class="freq-label">2kHz</div>
+            <div class="freq-label">1kHz</div>
+            <div class="freq-label">500Hz</div>
+            <!-- <div class="freq-label">0Hz</div> -->
+        </div>
+
+        <!-- 底部控制面板 -->
+        <div class="bottom-controls">
+            <!-- 基础控制 -->
+            <div class="control-section">
+                <h3>🎵 Audio Controls</h3>
+                <div class="button-group">
+                    <button id="startBtn"> Mic</button>
+                    <button id="stopBtn" disabled>⏹ Stop</button>
+                    <button class="file-upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Audio
+                    </button>
+                    <input type="file" id="fileInput" accept="audio/*" style="display: none;">
+                </div>
+            </div>
+
+            <!-- 音频参数 -->
+            <div class="control-section">
+                <h3>🔧 Audio Parameters</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>FFT Size:</label>
+                        <select id="fftSize">
+                            <option value="512">512</option>
+                            <option value="1024" selected>1024</option>
+                            <option value="2048">2048</option>
+                            <option value="4096">4096</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Mel Bands: <span class="value" id="melBandsValue">256</span></label>
+                        <input type="range" id="melBands" min="64" max="256" step="16" value="128">
+                    </div>
+                    <div class="control-item">
+                        <label>Smoothing: <span class="value" id="smoothingValue">0.5</span></label>
+                        <input type="range" id="smoothing" min="0" max="0.95" step="0.05" value="0.5">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 视觉效果 -->
+            <div class="control-section">
+                <h3>🎨 Visual Effects</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Bloom: <span class="value" id="bloomValue">0.7</span></label>
+                        <input type="range" id="bloomIntensity" min="0.4" max="2.0" step="0.1" value="0.7">
+                    </div>
+                    <!-- <div class="control-item">
+                        <label>Color Temp: <span class="value" id="colorTempValue">6500K</span></label>
+                        <input type="range" id="colorTemp" min="3000" max="10000" step="100" value="6500">
+                    </div> -->
+                    <!-- <div class="control-item">
+                        <label>Speed: <span class="value" id="scrollSpeedValue">1.0</span></label>
+                        <input type="range" id="scrollSpeed" min="0.1" max="3.0" step="0.1" value="1.0">
+                    </div> -->
+                    <div class="control-item">
+                        <label>Exposure: <span class="value" id="exposureValue">1.2</span></label>
+                        <input type="range" id="exposure" min="0.5" max="3.0" step="0.1" value="1.2">
+                    </div>
+                    
+                    <!-- 新增：Gamma 控制 -->
+                    <div class="control-item">
+                        <label>Gamma: <span class="value" id="gammaValue">1.0</span></label>
+                        <input type="range" id="gamma" min="0.5" max="2.0" step="0.1" value="1.0">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加载状态 -->
+        <div class="loading hidden" id="loading">
+            <div class="spinner"></div>
+            <div>Processing audio...</div>
+        </div>
+    </div>
+
+    <!-- 引入依赖和脚本 -->
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="spectrogram.js"></script>
+</body>
+</html>
