@@ -223,7 +223,7 @@ class SpectrogramVisualizer {
             float intensity = texel.r;
             
             // 高级色差效果
-            float aberrationStrength = intensity * 0.008 + 0.006 * sin(fract(time) * 2.0);
+            float aberrationStrength = intensity * 0.004 + 0.003 * sin(fract(time) * 2.0);
             
             // 分别采样RGB，加入时间偏移
             float intensityR = texture2D(spectrogramTexture, uv + vec2(-aberrationStrength, 0.0)).r;
